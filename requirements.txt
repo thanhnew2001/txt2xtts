@@ -1,1 +1,16 @@
 
+torch
+torchaudio
+TTS @ git+https://github.com/coqui-ai/TTS.git#egg=TTS
+transformers
+faster_whisper
+numpy
+pydub
+flask_cors
+hf_hub_ctranslate2
+deepspeed
+SentencePiece
+sacremoses
+cutlet
+Werkzeug
+nltk
