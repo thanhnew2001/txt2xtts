@@ -36,7 +36,7 @@ from hf_hub_ctranslate2 import MultiLingualTranslatorCT2fromHfHub
 
 import nltk
 nltk.download('punkt')
-
+from threading import Thread
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -44,6 +44,8 @@ CORS(app)  # Enable CORS for all routes
 # Directory where files are saved
 UPLOAD_FOLDER = os.path.join(app.root_path, 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+DOWNLOAD_FOLDER = os.path.join(app.root_path, 'downloads')
+os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 FILE_DIRECTORY = os.path.join(app.root_path, 'audios')
 os.makedirs(FILE_DIRECTORY, exist_ok=True)
 
@@ -194,6 +196,48 @@ def allowed_file(filename):
 def serve_index():
     return send_from_directory('static', 'index.html')
 
+@app.route('/download_audio/<unique_id>', methods=['GET'])
+def download_audio(unique_id):
+    """Endpoint to download the audio."""
+    audio_path = os.path.join(DOWNLOAD_FOLDER, unique_id + ".wav")
+
+    if os.path.exists(audio_path):
+        return send_file(video_path, as_attachment=True)
+    else:
+        return jsonify({'error': 'Video not found.'}), 404
+
+def background_processing(filepath, target_lang, recipient_email, host_url, unique_id):   
+    start_time = time.time()  # Record the start time
+    original_text = extract_text_from_file(filepath)
+    target_lang = target_lang
+
+    if not check_language_existence(target_lang):
+        return jsonify({"error": f"Language '{target_lang}' not supported"}), 400
+
+    sentences = sent_tokenize(original_text)
+    print(sentences)
+
+    wave_files = []
+    for sentence in sentences:
+        sentence_audio_path = generate_audio_mp3(sentence, target_lang, SPEAKER_WAV_PATH)
+        wave_files.append(sentence_audio_path)
+
+    output_wav_path = os.path.join(DOWNLOAD_FOLDER, unique_id + ".wav")
+    merge_wav_files(output_wav_path, wave_files)
+   
+    print("Done!!")
+    end_time = time.time()  # Record the end time
+    execution_time = end_time - start_time  # Calculate the total execution time
+    print(f"Total execution time: {execution_time} seconds")
+    # Construct the download link using the passed host_url
+    download_link = f"{host_url}download_audio/{unique_id}" 
+
+    # Send email notification with the download link
+    email_subject = "Your audio is ready!"
+    email_body = f"Your processed audio is ready. You can download it from: {download_link}"
+    send_secure_email(email_subject, email_body, recipient_email, "aivideo@tad-learning.edu.vn", "thanh123!@#")
+    print(f"Email sent to {recipient_email}")
+
 @app.route('/upload_speech', methods=['POST'])
 def upload_speech():
     if 'file' not in request.files:
@@ -212,26 +256,14 @@ def upload_speech():
     filepath = os.path.join(UPLOAD_FOLDER, filename_randomized)
     file.save(filepath)
 
-    original_text = extract_text_from_file(filepath)
+    # Pass the captured host URL to the background thread
+    recipient_email = request.form.get('recipient_email')
+    host_url = request.host_url  # Capture the host URL
     target_lang = request.form.get("target_lang", "en")
 
-    if not check_language_existence(target_lang):
-        return jsonify({"error": f"Language '{target_lang}' not supported"}), 400
+    Thread(target=background_processing, args=(filepath, target_lang, recipient_email, host_url, random_str)).start()
+    return jsonify({'message': 'Your audio is being processed. You will receive the result in your mailbox.'})
 
-    sentences = sent_tokenize(original_text)
-    print(sentences)
-    combined_audio = AudioSegment.empty()
-
-    wave_files = []
-    for sentence in sentences:
-        sentence_audio_path = generate_audio_mp3(sentence, target_lang, SPEAKER_WAV_PATH)
-        wave_files.append(sentence_audio_path)
-
-    output_wav_path = filepath + ".wav"
-    merge_wav_files(output_wav_path, wave_files)
-
-    os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
-    return send_file(output_wav_path, as_attachment=True, download_name="output_audio.wav")
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)
