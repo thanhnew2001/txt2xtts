@@ -138,22 +138,9 @@ def generate_audio_mp3(prompt, language, speaker_wav_path):
         audio = AudioSegment.from_wav(output_filename)
 
           # Convert the audio to MP3 and save it directly to a file
-        audio.export(output_filename + ".mp3", format="mp3", bitrate="22k")
-        return None
-    
-        # Convert the audio to MP3 and store in a BytesIO object
-        mp3_io = io.BytesIO()
-        audio.export(mp3_io, format="mp3", bitrate="22k")
-        mp3_io.seek(0)  # Go to the beginning of the BytesIO object
-
-        # Encode the MP3 data as a base64 string
-        mp3_data = mp3_io.getvalue()
-        mp3_base64 = base64.b64encode(mp3_data).decode('utf-8')
- 
-        if speaker_wav_path != SPEAKER_WAV_PATH:           
-            # os.remove(os.path.join(FILE_DIRECTORY, output_filename))
-            a = 1
-        return mp3_base64
+        mp3_file = output_filename + ".mp3
+        audio.export(mp3_file, format="mp3", bitrate="22k")
+        return mp3_file
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -218,20 +205,29 @@ def upload_speech():
     print(sentences)
     combined_audio = AudioSegment.empty()
 
+    mp3_files = []
     for sentence in sentences:
         sentence_audio_path = generate_audio_mp3(sentence, target_lang, SPEAKER_WAV_PATH)
-        #sentence_audio = AudioSegment.from_mp3(sentence_audio_path)
-        #combined_audio += sentence_audio
-        #os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
+        mp3_files.append(sentence_audio_path)
+        os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
 
     # Output file name includes the original file name plus the random string
     
-    #output_filename = f"{filename_base}_{random_str}.mp3"
-    #output_mp3_path = os.path.join(FILE_DIRECTORY, output_filename)
-    #combined_audio.export(output_mp3_path, format="mp3")
+    output_filename = f"{filename_base}_{random_str}.mp3"
+    output_mp3_path = os.path.join(FILE_DIRECTORY, output_filename)
 
-    #return send_file(output_mp3_path, as_attachment=True, attachment_filename=output_filename)
-    return "Hello"
+    # Load each mp3 file and append it to the audio_segments list
+    audio_segments = [AudioSegment.from_mp3(mp3_file) for mp3_file in mp3_files]
+    
+    # Concatenate all audio segments
+    combined = AudioSegment.empty()
+    for segment in audio_segments:
+        combined += segment
+    
+    # Export the combined audio to a new mp3 file
+    combined.export(output_mp3_path, format="mp3")  
+
+    return send_file(output_mp3_path, as_attachment=True, attachment_filename=output_filename)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)
