@@ -222,11 +222,11 @@ def upload_speech():
     for sentence in sentences:
         sentence_audio_path = generate_audio_mp3(sentence, target_lang, SPEAKER_WAV_PATH)
         wave_files.append(sentence_audio_path)
-        os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
 
     output_wav_path = filepath + ".wav"
     merge_wav_files(output_wav_path, wave_files)
 
+    os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
     return send_file(output_wav_path, as_attachment=True, attachment_filename=output_wav_path)
 
 if __name__ == '__main__':
