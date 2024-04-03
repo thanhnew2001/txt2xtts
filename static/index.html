@@ -4,10 +4,25 @@
     <!-- Meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Experience high-quality text-to-speech conversion with our easy-to-use online service. Upload your text files and convert them into clear, natural-sounding audio in various languages.">
+    <meta name="keywords" content="text-to-speech, TTS, audio conversion, speech synthesis">
+
+    <meta property="og:title" content="Text-to-Speech Service">
+    <meta property="og:description" content="Convert your text files into high-quality audio with our Text-to-Speech Service. Try it now!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xtts.infinitiai.work">
+    <meta property="og:image" content="https://xtts.infinitiai.work/thumbnail.jpg">
+    <meta property="og:site_name" content="Text-to-Speech Service">
+    <!-- Optional: Specify the image width and height -->
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    
     <title>Text-to-Speech Service</title>
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
 
     <!-- Custom CSS for Dark/Light Mode -->
     <style>
@@ -25,29 +40,75 @@
             background-color: #495057;
             color: #f8f9fa;
         }
+
+            /* Custom CSS for Form Container */
+        .form-container {
+            max-width: 70%; /* Adjust the width as needed */
+            margin: 0 auto; /* This centers the form in the available space */
+            padding: 20px;
+        }
+
+        /* Additional padding for the top of the body to ensure nothing is hidden behind the top banner */
+        body {
+            padding-top: 100px; /* Adjust this value based on the height of your banner */
+        }
+        .file-upload-container {
+            width: 200px; /* Square dimensions */
+            height: 200px;
+            border: 2px dashed #007bff; /* Dashed border for the drag area */
+            border-radius: 10px; /* Optional: for rounded corners */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0 auto; /* Center the upload container */
+            padding: 20px;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Styling for when dragging files over the area */
+        .file-upload-container.dragover {
+            border-color: #0056b3;
+            background-color: #e2e6ea;
+        }
+
+
     </style>
 </head>
 
 <body>
-    <!-- Dark/Light Mode Toggle -->
-    <div class="container mt-3">
-        <div class="d-flex justify-content-between">
-            <h1>Text-to-Speech Conversion</h1>
-            <button id="themeToggle" class="btn btn-secondary">Toggle Dark/Light Mode</button>
-        </div>
-    </div>
-
-    <!-- Marketing Introduction -->
-    <div class="container mt-4">
-        <p class="lead">Welcome to our Text-to-Speech Conversion Service. Upload a text file and have it read back to you in high-quality audio. Try it out now!</p>
-    </div>
+  
 
     <!-- Upload Form -->
-    <div class="container">
+    <div class="form-container">
+        <!-- Dark/Light Mode Toggle -->
+        <div class="container mt-3">
+            <div class="d-flex justify-content-between">
+                <h1>Text-to-Speech Conversion</h1>
+                <button id="themeToggle" class="btn btn-secondary">Toggle Dark/Light Mode</button>
+            </div>
+        </div>
+
+        <!-- Marketing Introduction -->
+        <div class="container mt-4">
+            <p class="lead">Welcome to our Text-to-Speech Conversion Service. Upload a text file and have it read back to you in high-quality audio. Try it out now!</p>
+        </div>
         <form id="uploadForm" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="fileInput" class="form-label">Select Text File</label>
-                <input class="form-control" type="file" id="fileInput" name="file" accept=".txt">
+            <!-- Your form fields go here -->
+            <div class="container">
+                <div class="file-upload-container">
+                    <input type="file" id="fileInput" name="file" accept=".txt" hidden>
+                    <label for="fileInput" class="file-upload-label">
+                        Drag and drop a file here or click to select a file
+                    </label>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="languageSelect" class="form-label">Select Language</label>
@@ -65,6 +126,7 @@
             <a id="downloadLink" class="mt-3 d-none">Download Audio File</a>
         </div>
     </div>
+    
 
     <!-- Advertisement Banners -->
     <div class="banner-ad" style="position: fixed; top: 0; left: 0; width: 100%;">Top Banner Ad</div>
