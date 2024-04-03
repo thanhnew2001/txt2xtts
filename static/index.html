@@ -170,11 +170,6 @@
         
         const formData = new FormData(this); // 'this' refers to the form
         
-        // Optional: Show progress bar
-        const progressBarContainer = document.getElementById('progressBarContainer');
-        const progressBar = document.getElementById('progressBar');
-        progressBarContainer.classList.remove('d-none');
-        progressBar.style.width = '0%';
         
         fetch('/upload_speech', {
             method: 'POST',
@@ -190,18 +185,12 @@
                 // Here, you can update the page with the message received from the API
                 const messageContainer = document.createElement('p');
                 messageContainer.textContent = data.message; // Use the message from the response
-                document.body.appendChild(messageContainer); // Append the message to the body or to a specific container
-                
-                // If there's a download link in the response, you can also update the download link element
-                // const downloadLink = document.getElementById('downloadLink');
-                // downloadLink.href = data.downloadUrl; // Assuming 'downloadUrl' is provided in the response
-                // downloadLink.classList.remove('d-none');
+                alert(data.message) // Append the message to the body or to a specific container
+
             }
-            progressBar.style.width = '100%'; // Update progress bar
         })
         .catch(error => {
             console.error('Error:', error);
-            progressBar.style.width = '100%'; // Update progress bar even in case of error
         });
     });
 </script>
@@ -238,6 +227,14 @@
     });
     </script>
     
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CDQX845BP0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'G-CDQX845BP0');
+</script>
 </body>
 </html>
