@@ -108,6 +108,8 @@ def merge_wav_files(output_file_path, input_files):
                     output_wav.setparams(input_wav.getparams())
                     params_set = True
                 # Read data from input file and write it to the output file
+                # Example parameters: 2 channels, sampwidth of 2, framerate of 44100, nframes=0, comptype='NONE', compname='not compressed'
+                output_wav.setparams((2, 2, 44100, 0, 'NONE', 'not compressed'))
                 output_wav.writeframes(input_wav.readframes(input_wav.getnframes()))
 
 def generate_audio_mp3(prompt, language, speaker_wav_path):
