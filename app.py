@@ -111,50 +111,48 @@ def merge_wav_files(output_file_path, input_files):
                 output_wav.writeframes(input_wav.readframes(input_wav.getnframes()))
 
 def generate_audio_mp3(prompt, language, speaker_wav_path):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    xtts_model.to(device)
-
-    prompt = re.sub("([^\x00-\x7F]|\w)(\.|\。|\?)", r"\1 \2\2", prompt)
+    try:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        xtts_model.to(device)
     
-    # Check if speaker latents are already calculated
-    if speaker_wav_path in speaker_latents_cache:
-        gpt_cond_latent, speaker_embedding = speaker_latents_cache[speaker_wav_path]
-    else:
-        start_time_latents = time.time()
-        gpt_cond_latent, speaker_embedding = xtts_model.get_conditioning_latents(
-            audio_path=speaker_wav_path, 
-            gpt_cond_len=30, 
-            gpt_cond_chunk_len=4, 
-            max_ref_length=60
+        prompt = re.sub("([^\x00-\x7F]|\w)(\.|\。|\?)", r"\1 \2\2", prompt)
+        
+        # Check if speaker latents are already calculated
+        if speaker_wav_path in speaker_latents_cache:
+            gpt_cond_latent, speaker_embedding = speaker_latents_cache[speaker_wav_path]
+        else:
+            start_time_latents = time.time()
+            gpt_cond_latent, speaker_embedding = xtts_model.get_conditioning_latents(
+                audio_path=speaker_wav_path, 
+                gpt_cond_len=30, 
+                gpt_cond_chunk_len=4, 
+                max_ref_length=60
+            )
+            latents_time = time.time() - start_time_latents
+            # Cache the latents for future use
+            speaker_latents_cache[speaker_wav_path] = (gpt_cond_latent, speaker_embedding)
+        
+        start_time_inference = time.time()
+    
+        if language == "zh":
+            language = "zh-cn"
+        out = xtts_model.inference(
+            prompt,
+            language,
+            gpt_cond_latent,
+            speaker_embedding,
+            repetition_penalty=5.0,
+            temperature=0.75,
         )
-        latents_time = time.time() - start_time_latents
-        # Cache the latents for future use
-        speaker_latents_cache[speaker_wav_path] = (gpt_cond_latent, speaker_embedding)
     
-    start_time_inference = time.time()
-
-    if language == "zh":
-        language = "zh-cn"
-    out = xtts_model.inference(
-        prompt,
-        language,
-        gpt_cond_latent,
-        speaker_embedding,
-        repetition_penalty=5.0,
-        temperature=0.75,
-    )
-
-    output_fileid = f"{uuid.uuid4()}"
-    output_filename = os.path.join(FILE_DIRECTORY, f"out_{output_fileid}.wav")
-    torchaudio.save(output_filename, torch.tensor(out["wav"]).unsqueeze(0), 24000)
-
-    return output_filename
+        output_fileid = f"{uuid.uuid4()}"
+        output_filename = os.path.join(FILE_DIRECTORY, f"out_{output_fileid}.wav")
+        torchaudio.save(output_filename, torch.tensor(out["wav"]).unsqueeze(0), 24000)
+    
+        return output_filename
 
     except Exception as e:
         print(f"An error occurred: {e}")
-        if speaker_wav_path != SPEAKER_WAV_PATH:
-            # os.remove(os.path.join(FILE_DIRECTORY, output_filename))
-            a = 1
         return None
 
 
