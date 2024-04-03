@@ -218,7 +218,7 @@ def upload_speech():
         sentence_audio_path = generate_audio_mp3(sentence, target_lang, SPEAKER_WAV_PATH)
         sentence_audio = AudioSegment.from_mp3(sentence_audio_path)
         combined_audio += sentence_audio
-        os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
+        #os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
 
     # Output file name includes the original file name plus the random string
     output_filename = f"{filename_base}_{random_str}.mp3"
