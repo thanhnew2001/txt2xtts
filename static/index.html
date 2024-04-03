@@ -11,7 +11,7 @@
     <meta property="og:description" content="Convert your text files into high-quality audio with our Text-to-Speech Service. Try it now!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://xtts.infinitiai.work">
-    <meta property="og:image" content="https://xtts.infinitiai.work/static/thumbnail.jpg">
+    <meta property="og:image" content="https://xtts.infinitiai.work/thumbnail.jpg">
     <meta property="og:site_name" content="Text-to-Speech Service">
     <!-- Optional: Specify the image width and height -->
     <meta property="og:image:width" content="1200">
@@ -22,7 +22,7 @@
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link rel="icon" type="image/png" href="https://xtts.infinitiai.work/static/favicon.png">
+    <link rel="icon" type="image/png" href="favicon.png">
 
     <!-- Custom CSS for Dark/Light Mode -->
     <style>
@@ -200,6 +200,39 @@
         });
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('fileInput');
+        const fileContainer = document.querySelector('.file-upload-container');
+        const fileLabel = document.querySelector('.file-upload-label');
+    
+        // Prevent default behavior (Prevent file from being opened)
+        fileContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileContainer.classList.add('dragover');
+        });
+    
+        fileContainer.addEventListener('dragleave', () => {
+            fileContainer.classList.remove('dragover');
+        });
+    
+        fileContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileContainer.classList.remove('dragover');
+            fileInput.files = e.dataTransfer.files;
+            const fileList = Array.from(fileInput.files).map(file => file.name).join(', ');
+            fileLabel.textContent = fileList || 'Drag and drop a file here or click to select a file';
+        });
+    
+        // Update label when file is selected via click
+        fileInput.addEventListener('change', () => {
+            const fileList = Array.from(fileInput.files).map(file => file.name).join(', ');
+            fileLabel.textContent = fileList || 'Drag and drop a file here or click to select a file';
+        });
+    });
+    </script>
+    
 
 </body>
 </html>
