@@ -37,6 +37,8 @@ from hf_hub_ctranslate2 import MultiLingualTranslatorCT2fromHfHub
 import nltk
 nltk.download('punkt')
 from threading import Thread
+from sendmail import send_secure_email  # Ensure this is your function for sending emails
+
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -202,7 +204,7 @@ def download_audio(unique_id):
     audio_path = os.path.join(DOWNLOAD_FOLDER, unique_id + ".wav")
 
     if os.path.exists(audio_path):
-        return send_file(video_path, as_attachment=True)
+        return send_file(audio_path, as_attachment=True)
     else:
         return jsonify({'error': 'Video not found.'}), 404
 
