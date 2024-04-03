@@ -137,6 +137,10 @@ def generate_audio_mp3(prompt, language, speaker_wav_path):
         # Load the WAV file
         audio = AudioSegment.from_wav(output_filename)
 
+          # Convert the audio to MP3 and save it directly to a file
+        audio.export("mp3_"+output_filename, format="mp3", bitrate="22k")
+        return None
+    
         # Convert the audio to MP3 and store in a BytesIO object
         mp3_io = io.BytesIO()
         audio.export(mp3_io, format="mp3", bitrate="22k")
@@ -216,8 +220,8 @@ def upload_speech():
 
     for sentence in sentences:
         sentence_audio_path = generate_audio_mp3(sentence, target_lang, SPEAKER_WAV_PATH)
-        sentence_audio = AudioSegment.from_mp3(sentence_audio_path)
-        combined_audio += sentence_audio
+        #sentence_audio = AudioSegment.from_mp3(sentence_audio_path)
+        #combined_audio += sentence_audio
         #os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
 
     # Output file name includes the original file name plus the random string
