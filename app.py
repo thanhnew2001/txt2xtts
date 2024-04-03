@@ -76,6 +76,7 @@ if os.path.exists(config_path):
         config,
         checkpoint_path=os.path.join(model_path, "model.pth"),
         vocab_path=os.path.join(model_path, "vocab.json"),
+        checkpoint_dir= model_path,
         eval=True,
         use_deepspeed=True
     )
