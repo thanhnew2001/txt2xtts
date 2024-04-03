@@ -166,6 +166,17 @@ def check_language_existence(lang):
     else:
         return False
 
+def extract_text_from_file(filepath):
+    try:
+        with open(filepath, 'r', encoding='utf-8') as file:
+            return file.read()
+    except FileNotFoundError:
+        print(f"The file at {filepath} was not found.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
 ALLOWED_EXTENSIONS = {'txt'}
 def allowed_file(filename):
     return '.' in filename and \
