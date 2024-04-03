@@ -186,7 +186,7 @@ def upload_speech():
     filename_secure = secure_filename(file.filename)
     filename_base, file_extension = os.path.splitext(filename_secure)
     filename_randomized = f"{filename_base}_{random_str}{file_extension}"
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename_randomized)
+    filepath = os.path.join(UPLOAD_FOLDER, filename_randomized)
     file.save(filepath)
 
     original_text = extract_text_from_file(filepath)
