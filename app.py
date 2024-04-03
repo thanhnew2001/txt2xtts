@@ -191,8 +191,8 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+def serve_index():
+    return send_from_directory('static', 'index.html')
 
 @app.route('/upload_speech', methods=['POST'])
 def upload_speech():
