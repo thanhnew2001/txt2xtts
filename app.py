@@ -221,11 +221,13 @@ def upload_speech():
         #os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
 
     # Output file name includes the original file name plus the random string
-    output_filename = f"{filename_base}_{random_str}.mp3"
-    output_mp3_path = os.path.join(FILE_DIRECTORY, output_filename)
-    combined_audio.export(output_mp3_path, format="mp3")
+    
+    #output_filename = f"{filename_base}_{random_str}.mp3"
+    #output_mp3_path = os.path.join(FILE_DIRECTORY, output_filename)
+    #combined_audio.export(output_mp3_path, format="mp3")
 
-    return send_file(output_mp3_path, as_attachment=True, attachment_filename=output_filename)
+    #return send_file(output_mp3_path, as_attachment=True, attachment_filename=output_filename)
+    return "Hello"
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)
