@@ -34,6 +34,10 @@ from flask_cors import CORS
 
 from hf_hub_ctranslate2 import MultiLingualTranslatorCT2fromHfHub
 
+import nltk
+nltk.download('punkt')
+
+
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
