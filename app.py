@@ -40,7 +40,7 @@ from threading import Thread
 from sendmail import send_secure_email  # Ensure this is your function for sending emails
 
 
-app = Flask(__name__)
+app = Flask(__name__,  static_url_path='/static', static_folder='static')
 CORS(app)  # Enable CORS for all routes
 
 # Directory where files are saved
