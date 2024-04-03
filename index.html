@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Text File for Speech Conversion</title>
+</head>
+<body>
+    <h2>Upload Text File</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" accept=".txt">
+        <button type="submit">Upload and Convert</button>
+    </form>
+    <audio controls id="audioPlayer" style="display: none;"></audio>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData();
+            formData.append('file', document.getElementById('fileInput').files[0]);
+            // Adjust the target_lang as per your requirement
+            formData.append('target_lang', 'en');
+            fetch('/upload_speech', {
+                method: 'POST',
+                body: formData,
+            }).then(response => {
+                if (response.ok) {
+                    return response.blob();
+                }
+                throw new Error('Network response was not ok.');
+            }).then(blob => {
+                var url = window.URL.createObjectURL(blob);
+                var audioPlayer = document.getElementById('audioPlayer');
+                audioPlayer.src = url;
+                audioPlayer.style.display = 'block';
+            }).catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+        });
+    </script>
+</body>
+</html>
