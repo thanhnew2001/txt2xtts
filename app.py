@@ -166,6 +166,11 @@ def check_language_existence(lang):
     else:
         return False
 
+ALLOWED_EXTENSIONS = {'txt'}
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    
 @app.route('/upload_speech', methods=['POST'])
 def upload_speech():
     if 'file' not in request.files:
