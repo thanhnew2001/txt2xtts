@@ -138,7 +138,7 @@ def generate_audio_mp3(prompt, language, speaker_wav_path):
         audio = AudioSegment.from_wav(output_filename)
 
           # Convert the audio to MP3 and save it directly to a file
-        mp3_file = output_filename + ".mp3
+        mp3_file = output_filename + ".mp3"
         audio.export(mp3_file, format="mp3", bitrate="22k")
         return mp3_file
 
