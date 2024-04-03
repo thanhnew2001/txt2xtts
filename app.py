@@ -95,6 +95,21 @@ else:
 # Dictionary to store speaker encoding latents for reuse
 speaker_latents_cache = {}
 
+import wave
+
+def merge_wav_files(output_file_path, input_files):
+    # Open the output file
+    with wave.open(output_file_path, 'wb') as output_wav:
+        # Initialize parameters for output file
+        params_set = False
+        for wav_file in input_files:
+            with wave.open(wav_file, 'rb') as input_wav:
+                if not params_set:
+                    output_wav.setparams(input_wav.getparams())
+                    params_set = True
+                # Read data from input file and write it to the output file
+                output_wav.writeframes(input_wav.readframes(input_wav.getnframes()))
+
 def generate_audio_mp3(prompt, language, speaker_wav_path):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     xtts_model.to(device)
@@ -133,14 +148,7 @@ def generate_audio_mp3(prompt, language, speaker_wav_path):
     output_filename = os.path.join(FILE_DIRECTORY, f"out_{output_fileid}.wav")
     torchaudio.save(output_filename, torch.tensor(out["wav"]).unsqueeze(0), 24000)
 
-    try:
-        # Load the WAV file
-        audio = AudioSegment.from_wav(output_filename)
-
-          # Convert the audio to MP3 and save it directly to a file
-        mp3_file = output_filename + ".mp3"
-        audio.export(mp3_file, format="mp3", bitrate="22k")
-        return mp3_file
+    return output_filename
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -205,29 +213,16 @@ def upload_speech():
     print(sentences)
     combined_audio = AudioSegment.empty()
 
-    mp3_files = []
+    wave_files = []
     for sentence in sentences:
         sentence_audio_path = generate_audio_mp3(sentence, target_lang, SPEAKER_WAV_PATH)
-        mp3_files.append(sentence_audio_path)
+        wave_files.append(sentence_audio_path)
         os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
 
-    # Output file name includes the original file name plus the random string
-    
-    output_filename = f"{filename_base}_{random_str}.mp3"
-    output_mp3_path = os.path.join(FILE_DIRECTORY, output_filename)
+    output_wav_path = filepath + ".wav"
+    merge_wav_files(output_wav_path, wav_files)
 
-    # Load each mp3 file and append it to the audio_segments list
-    audio_segments = [AudioSegment.from_mp3(mp3_file) for mp3_file in mp3_files]
-    
-    # Concatenate all audio segments
-    combined = AudioSegment.empty()
-    for segment in audio_segments:
-        combined += segment
-    
-    # Export the combined audio to a new mp3 file
-    combined.export(output_mp3_path, format="mp3")  
-
-    return send_file(output_mp3_path, as_attachment=True, attachment_filename=output_filename)
+    return send_file(output_wav_path, as_attachment=True, attachment_filename=output_filename)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)
