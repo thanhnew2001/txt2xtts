@@ -227,7 +227,7 @@ def upload_speech():
     output_wav_path = filepath + ".wav"
     merge_wav_files(output_wav_path, wave_files)
 
-    return send_file(output_wav_path, as_attachment=True, attachment_filename=output_filename)
+    return send_file(output_wav_path, as_attachment=True, attachment_filename=output_wav_path)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)
