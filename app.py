@@ -98,19 +98,24 @@ speaker_latents_cache = {}
 import wave
 
 def merge_wav_files(output_file_path, input_files):
+    # Ensure we have files to process
+    if not input_files:
+        raise ValueError("No input files provided for merging.")
+    
     # Open the output file
-    with wave.open(output_file_path, 'wb') as output_wav:
-        # Initialize parameters for output file
-        params_set = False
-        for wav_file in input_files:
-            with wave.open(wav_file, 'rb') as input_wav:
-                if not params_set:
-                    output_wav.setparams(input_wav.getparams())
-                    params_set = True
-                # Read data from input file and write it to the output file
-                # Example parameters: 2 channels, sampwidth of 2, framerate of 44100, nframes=0, comptype='NONE', compname='not compressed'
-                output_wav.setparams((2, 2, 44100, 0, 'NONE', 'not compressed'))
-                output_wav.writeframes(input_wav.readframes(input_wav.getnframes()))
+    output_wav = wave.open(output_file_path, 'wb')
+    
+    # Use parameters from the first input file
+    with wave.open(input_files[0], 'rb') as first_wav_file:
+        output_wav.setparams(first_wav_file.getparams())
+    
+    for wav_file in input_files:
+        with wave.open(wav_file, 'rb') as input_wav:
+            # Read data from input file and write it to the output file
+            output_wav.writeframes(input_wav.readframes(input_wav.getnframes()))
+    
+    # Ensure to close the file
+    output_wav.close()
 
 def generate_audio_mp3(prompt, language, speaker_wav_path):
     try:
