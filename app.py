@@ -211,6 +211,7 @@ def upload_speech():
         return jsonify({"error": f"Language '{target_lang}' not supported"}), 400
 
     sentences = sent_tokenize(original_text)
+    print(sentences)
     combined_audio = AudioSegment.empty()
 
     for sentence in sentences:
@@ -221,7 +222,7 @@ def upload_speech():
 
     # Output file name includes the original file name plus the random string
     output_filename = f"{filename_base}_{random_str}.mp3"
-    output_mp3_path = os.path.join(UPLOAD_FOLDER, output_filename)
+    output_mp3_path = os.path.join(FILE_DIRECTORY, output_filename)
     combined_audio.export(output_mp3_path, format="mp3")
 
     return send_file(output_mp3_path, as_attachment=True, attachment_filename=output_filename)
