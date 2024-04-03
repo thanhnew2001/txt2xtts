@@ -194,6 +194,42 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+import re
+
+def clean_text(text):
+    # Remove multiple consecutive spaces, newlines, and tabs with a single space
+    text = re.sub(r'[\s]+', ' ', text)
+    # Keep only alphabets, digits, commas, periods, and spaces; remove other characters
+    text = re.sub(r'[^a-zA-Z0-9,\. ]', '', text)
+    return text
+
+def split_long_sentences(text, max_length=245):
+    new_text = []
+    sentences = text.split('.')
+    for sentence in sentences:
+        while len(sentence) > max_length:
+            # Try to find a comma to split at
+            split_at = sentence.rfind(',', 0, max_length)
+            if split_at == -1:  # No comma found, split at max_length
+                split_at = max_length
+            new_text.append(sentence[:split_at])
+            sentence = sentence[split_at+1:]  # +1 to skip the comma/space
+        new_text.append(sentence)
+    return '. '.join(new_text)
+
+
+
+def clean_file(input, output):
+    final_content = ''
+    # Read the original file content
+    with open(input, 'r', encoding='utf-8') as file:
+        original_content = file.read()
+        # Clean the entire content first
+        final_content = split_long_sentences(clean_text(original_content))
+    # Save the cleaned and split content to a new file
+    with open(output, 'w', encoding='utf-8') as file:
+        file.write(final_content)
+
 @app.route('/')
 def serve_index():
     return send_from_directory('static', 'index.html')
@@ -210,7 +246,10 @@ def download_audio(unique_id):
 
 def background_processing(filepath, target_lang, recipient_email, host_url, unique_id):   
     start_time = time.time()  # Record the start time
-    original_text = extract_text_from_file(filepath)
+    
+    clean_file(filepath, filepath + "_cleaned.txt")
+    
+    original_text = extract_text_from_file(filepath + "_cleaned.txt")
     target_lang = target_lang
 
     if not check_language_existence(target_lang):
