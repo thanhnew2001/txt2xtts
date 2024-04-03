@@ -218,7 +218,7 @@ def upload_speech():
         os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
 
     output_wav_path = filepath + ".wav"
-    merge_wav_files(output_wav_path, wav_files)
+    merge_wav_files(output_wav_path, wave_files)
 
     return send_file(output_wav_path, as_attachment=True, attachment_filename=output_filename)
 
