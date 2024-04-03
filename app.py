@@ -227,7 +227,7 @@ def upload_speech():
     merge_wav_files(output_wav_path, wave_files)
 
     os.remove(sentence_audio_path)  # Cleanup individual sentence audio files
-    return send_file(output_wav_path, as_attachment=True, attachment_filename=output_wav_path)
+    return send_file(output_wav_path, as_attachment=True, download_name="output_audio.wav")
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)
