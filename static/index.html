@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Text-to-Speech Conversion Service - Unlimited Transcription on Your Local Machine. Say Goodbye to Monthly Fees.">
-    <meta name="keywords" content="Text-to-Speech, Audio Transcription, No Subscription, Unlimited Transcription, Privacy First">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta name="description" content="Experience high-quality text-to-speech service with unlimited transcription on your local machine. No monthly fees.">
+    <meta name="keywords" content="Text-to-Speech, Unlimited Transcription, Privacy-First Audio Transcription, No Subscription">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <title>Text-to-Speech Conversion Service</title>
+    
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+
+    <!-- Custom CSS for Dark/Light Mode and Adjustments -->
     <style>
         body.dark-mode {
             background-color: #343a40;
@@ -25,39 +30,98 @@
         }
     </style>
 </head>
+
 <body>
+    <!-- Dark/Light Mode Toggle -->
     <div class="container mt-3">
-        <h1>Text-to-Speech Conversion Service</h1>
-        <p>Welcome to our premium Text-to-Speech Conversion Service. Convert your text files into high-quality audio without any subscription fees. Pay once, and enjoy unlimited transcription on your local machine with utmost privacy.</p>
-        <h2>🎉 Black Friday Deal 🎉 Get 55% Discount with Code CZOTY5MG</h2>
-        <p>Seize this opportunity before it's gone! Offer ends soon.</p>
-        <button class="btn btn-success">Download Free Version</button>
-        <h3>How It Works</h3>
-        <ol>
-            <li>Select your preferred language and model size. We support up to 99 languages for versatile transcription needs. The larger the model, the better the quality of the output.</li>
-            <li>Drag and drop or upload your file. We support a variety of different file formats including mp3, m4a, wav, mov.</li>
-            <li>Export the result in various formats (srt, txt, vtt, csv) to choose the best format that suits your needs.</li>
-        </ol>
-        <h3>Ideal For</h3>
-        <ul>
-            <li><strong>Researchers:</strong> Transcribe interviews and other audio recordings for analysis and study.</li>
-            <li><strong>Podcasters:</strong> Transcribe your episodes to create blog posts or captions for your audience.</li>
-            <li><strong>Content Creators:</strong> Transcribe your video content for accessibility or SEO purposes.</li>
-            <li><strong>Journalists:</strong> Transcribe interviews or press briefings for accurate reporting.</li>
-            <li><strong>Small Business Owners:</strong> Transcribe meetings or webinars for reference and documentation.</li>
-            <li><strong>Legal Professionals:</strong> Transcribe depositions, court hearings, or other legal proceedings.</li>
-        </ul>
-        <h3>Words from Our Happy Users</h3>
-        <p>“Well well, finally something cool comes with unlimited transcribing with great backend. Congrats on the launch.” - Konstantin Cholev, HALLIBURTON Sperry IT Norway</p>
-        <p>“Congratulations on the PH launch, this product looks fantastic! I love how intuitive the interface appears.” - Swapnil, BetaLaunchpad</p>
-        <p>“This is a fantastic tool that sits on my desktop. It works offline, so there are no privacy/security issues. It gives seamless audio-to-text conversion.” - Sujit Biswa, Digital Marketing Manager</p>
-        <p>“Offline speech to text is a great idea, especially for privacy concerns!” - Fred VP</p>
-        <h3>Pricing</h3>
-        <p><strong>FREE:</strong> Unlimited transcription, basic AI model, transcription history, multilingual transcription. <strong>Get Started Now!</strong></p>
-        <p><strong>PRO ($22.5/license):</strong> All features in the basic plan plus all AI models, advanced features, and priority support. <strong>Upgrade Today!</strong></p>
+        <div class="d-flex justify-content-between">
+            <h1>Text-to-Speech Conversion</h1>
+            <button id="themeToggle" class="btn btn-secondary">Toggle Dark/Light Mode</button>
+        </div>
     </div>
+
+    <!-- Marketing Introduction -->
+    <div class="container mt-4">
+        <div id="serviceCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="images/transcription_service.jpg" class="d-block w-100" alt="Text-to-Speech Service">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Unlimited Transcription</h5>
+                        <p>Say goodbye to monthly fees with our Text-to-Speech Service.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/privacy_first.jpg" class="d-block w-100" alt="Privacy First">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Privacy First</h5>
+                        <p>Our service ensures your data remains confidential.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/cross_platform.jpg" class="d-block w-100" alt="Cross Platform">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Cross-Platform App</h5>
+                        <p>Use our service on any device, anywhere.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#serviceCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#serviceCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Features Introduction -->
+    <div class="container mt-5">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card">
+                    <img src="images/feature_language.jpg" class="card-img-top" alt="Languages Supported">
+                    <div class="card-body">
+                        <h5 class="card-title">Multiple Languages Supported</h5>
+                        <p class="card-text">Choose from 99+ languages for transcription.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img src="images/feature_upload.jpg" class="card-img-top" alt="Easy Upload">
+                    <div class="card-body">
+                        <h5 class="card-title">Easy File Upload</h5>
+                        <p class="card-text">Support for multiple file formats including mp3, m4a, wav, and mov.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img src="images/feature_export.jpg" class="card-img-top" alt="Flexible Export Options">
+                    <div class="card-body">
+                        <h5 class="card-title">Flexible Export Options</h5>
+                        <p class="card-text">Export your transcription in srt, txt, vtt, or csv formats.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rest of your existing HTML content -->
+
+    <!-- Bootstrap JS and Popper.js -->
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+
+    <!-- Custom Scripts -->
+    <script>
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
 </body>
 </html>
