@@ -43,9 +43,17 @@
 
             /* Custom CSS for Form Container */
         .form-container {
-            max-width: 90%; /* Adjust the width as needed */
+            max-width:650px; /* Adjust the width as needed */
             margin: 0 auto; /* This centers the form in the available space */
-            padding: 5px;
+            padding: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* Media query for screens smaller than 768px */
+        @media (max-width: 768px) {
+            .form-container {
+                max-width: 300px; /* Makes the form wider on smaller screens */
+            }
         }
 
         /* Additional padding for the top of the body to ensure nothing is hidden behind the top banner */
@@ -77,6 +85,55 @@
         .file-upload-container.dragover {
             border-color: #0056b3;
             background-color: #e2e6ea;
+        }
+
+          /* Base styles for banners */
+        .banner-ad {
+            position: fixed;
+            background-color: #f4f4f4; /* Just an example; adjust as needed */
+            color: #333; /* Text color */
+            padding: 10px; /* Add some padding */
+            text-align: center; /* Center the text */
+            z-index: 1000; /* Ensure it's above other content */
+        }
+
+        .top-banner-ad {
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .bottom-banner-ad {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .right-banner-ad {
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 20%; /* Initial width for larger screens */
+        }
+
+        .left-banner-ad {
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 20%; /* Initial width for larger screens */
+        }
+
+        /* Media query for screens smaller than 768px */
+        @media (max-width: 768px) {
+            .top-banner-ad, .bottom-banner-ad {
+                /* Reduce padding for smaller screens */
+                padding: 5px;
+            }
+
+            .right-banner-ad, .left-banner-ad {
+                /* Make side banners narrower on smaller screens */
+                width: 15%;
+            }
         }
 
 
@@ -132,12 +189,11 @@
         </div>
     </div>
     
-
     <!-- Advertisement Banners -->
-    <div class="banner-ad" style="position: fixed; top: 0; left: 0; width: 100%;">Top Banner Ad</div>
-    <div class="banner-ad" style="position: fixed; bottom: 0; left: 0; width: 100%;">Bottom Banner Ad</div>
-    <div class="banner-ad" style="position: fixed; top: 0; right: 0; height: 100%;">Right Banner Ad</div>
-    <div class="banner-ad" style="position: fixed; top: 0; left: 0; height: 100%;">Left Banner Ad</div>
+    <div class="banner-ad top-banner-ad">Top Banner Ad</div>
+    <div class="banner-ad bottom-banner-ad">Bottom Banner Ad</div>
+    <div class="banner-ad right-banner-ad">Right Banner Ad</div>
+    <div class="banner-ad left-banner-ad">Left Banner Ad</div>
 
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
@@ -227,14 +283,6 @@
     });
     </script>
     
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-CDQX845BP0"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-CDQX845BP0');
-</script>
 </body>
 </html>
