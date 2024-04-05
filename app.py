@@ -52,7 +52,7 @@ FILE_DIRECTORY = os.path.join(app.root_path, 'audios')
 os.makedirs(FILE_DIRECTORY, exist_ok=True)
 
 # Use this if there is no user_id sent
-SPEAKER_WAV_PATH = "giongnu.wav"  # Update this path
+SPEAKER_WAV_PATH = "female_voice.wav"  # Update this path
     
 # Set environment variable for Coqui TTS agreement
 os.environ["COQUI_TOS_AGREED"] = "1"
@@ -244,7 +244,7 @@ def download_audio(unique_id):
     else:
         return jsonify({'error': 'Video not found.'}), 404
 
-def background_processing(filepath, target_lang, recipient_email, host_url, unique_id):   
+def background_processing(filepath, target_lang, recipient_email, host_url, unique_id, speaker_wav_path):   
     start_time = time.time()  # Record the start time
     
     clean_file(filepath, filepath + "_cleaned.txt")
@@ -260,7 +260,7 @@ def background_processing(filepath, target_lang, recipient_email, host_url, uniq
 
     wave_files = []
     for sentence in sentences:
-        sentence_audio_path = generate_audio_mp3(sentence, target_lang, SPEAKER_WAV_PATH)
+        sentence_audio_path = generate_audio_mp3(sentence, target_lang, speaker_wav_path)
         wave_files.append(sentence_audio_path)
 
     output_wav_path = os.path.join(DOWNLOAD_FOLDER, unique_id + ".wav")
@@ -301,8 +301,9 @@ def upload_speech():
     recipient_email = request.form.get('recipient_email')
     host_url = request.host_url  # Capture the host URL
     target_lang = request.form.get("target_lang", "en")
+    speaker_wav_path =  request.form.get("voice", "female_voice")
 
-    Thread(target=background_processing, args=(filepath, target_lang, recipient_email, host_url, random_str)).start()
+    Thread(target=background_processing, args=(filepath, target_lang, recipient_email, host_url, random_str, speaker_wav_path)).start()
     return jsonify({'message': 'Your audio is being processed. You will receive the result in your mailbox.'})
 
 
