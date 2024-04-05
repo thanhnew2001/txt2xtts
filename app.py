@@ -189,12 +189,21 @@ def extract_text_from_file(filepath):
         print(f"An error occurred: {e}")
         return None
 
-ALLOWED_EXTENSIONS = {'txt, wav'}
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+ALLOWED_EXTENSIONS_TEXT = {'txt'}
+ALLOWED_EXTENSIONS_AUDIO = {'wav'}
 
-import re
+def allowed_file(filename, file_type):
+    # Select the correct set of allowed extensions based on file_type
+    if file_type.lower() == 'text':
+        allowed_extensions = ALLOWED_EXTENSIONS_TEXT
+    elif file_type.lower() == 'audio':
+        allowed_extensions = ALLOWED_EXTENSIONS_AUDIO
+    else:
+        return False  # Return False if the file_type is not recognized
+    
+    # Check if the file extension is in the allowed set
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
 
 def clean_text(text):
     # Remove multiple consecutive spaces, newlines, and tabs with a single space
@@ -285,7 +294,7 @@ def upload_speech():
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
     file = request.files['file']
-    if file.filename == '' or not allowed_file(file.filename):
+    if file.filename == '' or not allowed_file(file.filename, 'text'):
         return jsonify({"error": "No selected file or file type not allowed"}), 400
 
     # Generate a random string to append to the file name
@@ -300,7 +309,7 @@ def upload_speech():
 
      # Check for an optional voice file
     voice_file = request.files.get('voice_file')
-    if voice_file and allowed_file(voice_file.filename):
+    if voice_file and allowed_file(voice_file.filename, 'audio'):
         # Process the voice file similarly, using a different directory if needed
         voice_filename_secure = secure_filename(voice_file.filename)
         voice_filepath = os.path.join(UPLOAD_FOLDER, voice_filename_secure)
