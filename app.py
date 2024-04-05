@@ -189,7 +189,7 @@ def extract_text_from_file(filepath):
         print(f"An error occurred: {e}")
         return None
 
-ALLOWED_EXTENSIONS = {'txt'}
+ALLOWED_EXTENSIONS = {'txt, wav'}
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -281,6 +281,7 @@ def background_processing(filepath, target_lang, recipient_email, host_url, uniq
 
 @app.route('/upload_speech', methods=['POST'])
 def upload_speech():
+    # Get text file
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
     file = request.files['file']
@@ -297,11 +298,23 @@ def upload_speech():
     filepath = os.path.join(UPLOAD_FOLDER, filename_randomized)
     file.save(filepath)
 
+     # Check for an optional voice file
+    voice_file = request.files.get('voice_file')
+    if voice_file and allowed_file(voice_file.filename):
+        # Process the voice file similarly, using a different directory if needed
+        voice_filename_secure = secure_filename(voice_file.filename)
+        voice_filepath = os.path.join(UPLOAD_FOLDER, voice_filename_secure)
+        voice_file.save(voice_filepath)
+        speaker_wav_path = voice_filepath
+    else:
+        # Fallback to a default or selected voice option
+        speaker_wav_path = request.form.get("voice", "female_voice.wav")  # Use default path or form option
+
+    
     # Pass the captured host URL to the background thread
     recipient_email = request.form.get('recipient_email')
     host_url = request.host_url  # Capture the host URL
     target_lang = request.form.get("target_lang", "en")
-    speaker_wav_path =  request.form.get("voice", "female_voice")
 
     Thread(target=background_processing, args=(filepath, target_lang, recipient_email, host_url, random_str, speaker_wav_path)).start()
     return jsonify({'message': 'Your audio is being processed. You will receive the result in your mailbox.'})
