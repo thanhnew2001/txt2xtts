@@ -79,7 +79,6 @@ queue_url = 'https://sqs.ap-southeast-1.amazonaws.com/467469515596/xtts'
 
 def send_to_sqs(queue_url, message_body):
     # Create an SQS client
-    sqs = boto3.client('sqs')
     # Send the message to SQS
     response = sqs.send_message(QueueUrl=queue_url, MessageBody=message_body)
     return response
