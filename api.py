@@ -1,23 +1,17 @@
 import os
-import secrets
-from flask import Flask, request, jsonify, send_file
-from werkzeug.utils import secure_filename
-from nltk.tokenize import sent_tokenize
-from pydub import AudioSegment
-# Assuming these are your custom functions
-
-import os
 import time
 import re
 import json
 import io
 import base64
 import uuid 
-
+import secrets
+from werkzeug.utils import secure_filename
+from nltk.tokenize import sent_tokenize
 from flask import Flask, request, jsonify, make_response, send_file, render_template, Response, send_from_directory
 from flask_cors import CORS
-
 import nltk
+
 nltk.download('punkt')
 
 ALLOWED_EXTENSIONS_TEXT = {'txt'}
