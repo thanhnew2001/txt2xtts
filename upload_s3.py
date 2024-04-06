@@ -19,6 +19,6 @@ def upload_file_to_s3(file_name, bucket_name, object_name=None):
 
 # Usage example
 file_name = 'female_voice.wav'
-bucket_name = 'arn:aws:s3:::xtts'
+bucket_name = 'xtts'
 presigned_url = upload_file_to_s3(file_name, bucket_name)
 print(presigned_url)
