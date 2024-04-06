@@ -134,16 +134,20 @@ def upload_speech():
     host_url = request.host_url  # Capture the host URL
     target_lang = request.form.get("target_lang", "en")
 
-  # Construct the message
+    # Read the text file content
+    with open(filepath, 'r', encoding='utf-8') as file:
+        file_content = file.read()
+    
+    # Construct the message including the file's content
     message_body = json.dumps({
-        'filepath': filepath,
+        'file_content': file_content,  # Add the file content directly
         'target_lang': target_lang,
         'recipient_email': recipient_email,
         'host_url': request.host_url,
         'unique_id': random_str,
         'speaker_wav_path': speaker_wav_path
     })
-    
+            
     # Send the message to SQS
     response = send_to_sqs(queue_url, message_body)
     print(f"Message sent to SQS with ID: {response['MessageId']}")
