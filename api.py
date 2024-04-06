@@ -14,8 +14,16 @@ import nltk
 
 nltk.download('punkt')
 
+app = Flask(__name__,  static_url_path='/static', static_folder='static')
+CORS(app)  # Enable CORS for all routes
+
 ALLOWED_EXTENSIONS_TEXT = {'txt'}
 ALLOWED_EXTENSIONS_AUDIO = {'wav'}
+
+# Directory where files are saved
+UPLOAD_FOLDER = os.path.join(app.root_path, 'uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+DOWNLOAD_FOLDER = os.path.join(app.root_path, 
 
 def allowed_file(filename, file_type):
     # Select the correct set of allowed extensions based on file_type
