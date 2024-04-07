@@ -197,7 +197,7 @@
                 <input type="file" class="form-control" id="voiceFileInput" name="voice_file" accept=".wav">
             </div>
 
-            <button type="submit" class="btn btn-primary">Convert to Speech</button>
+            <button type="submit" id="submitButton" class="btn btn-primary">Convert to Speech</button>
         </form>
         <!-- Progress bar and download link placeholders -->
         <div class="mt-3">
@@ -286,6 +286,7 @@
                 const messageContainer = document.createElement('p');
                 messageContainer.textContent = data.message; // Use the message from the response
                 alert(data.message) // Append the message to the body or to a specific container
+                docment.getElementById('submitButton').disabled = true; // Disable the button
 
             }
         })
