@@ -247,17 +247,14 @@ def conversion_processing(message_body):
             return False
         
         start_time = time.time()  # Record the start time
- 
-        # Parse the message_body string into a Python dictionary
-        message = json.loads(message_body)
-            
+
         # Extract parameters
-        file_content = message.get('file_content')
-        target_lang = message.get('target_lang')
-        recipient_email = message.get('recipient_email')
-        host_url = message.get('host_url')
-        unique_id = message.get('unique_id')
-        speaker_wav_path = message.get('speaker_wav_path')
+        file_content = message_body.get('file_content')
+        target_lang = message_body.get('target_lang')
+        recipient_email = message_body.get('recipient_email')
+        host_url = message_body.get('host_url')
+        unique_id = message_body.get('unique_id')
+        speaker_wav_path = message_body.get('speaker_wav_path')
             
         # Save the file_content to a file
         file_path = os.path.join(UPLOAD_FOLDER, f'{unique_id}.txt')
