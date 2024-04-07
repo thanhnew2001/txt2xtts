@@ -242,7 +242,7 @@ def clean_file(input, output):
 
 def conversion_processing(message_body):
     try:   
-        if message_body:
+        if message_body is None:
             print("Message empty")
             return False
         
