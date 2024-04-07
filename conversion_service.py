@@ -289,7 +289,7 @@ def conversion_processing(message_body):
         execution_time = end_time - start_time  # Calculate the total execution time
         print(f"Total execution time: {execution_time} seconds")
 
-        file_name = 'output_wav_path.wav'
+        file_name = output_wav_path
         bucket_name = 'xtts'
         presigned_url = upload_file_to_s3(file_name, bucket_name)
         print(presigned_url)
