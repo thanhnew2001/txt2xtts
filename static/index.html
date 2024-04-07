@@ -214,7 +214,7 @@
         </form>       
     </div>
 
-    <footer class="bg-light text-center text-lg-start" style="padding: 20px; position: fixed; bottom: 0; width: 100%; z-index: 1050;">
+<footer class="bg-light text-center text-lg-start" style="padding: 20px; bottom: 0; width: 100%; z-index: 1050;">
   <div class="container p-4">
     <div class="row">
       <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
@@ -230,7 +230,7 @@
             <a href="#!" class="text-dark">About Us</a>
           </li>
           <li>
-            <a href="#!" class="text-dark">Privacy Policy</a>
+            <a href="static/policy.txt" class="text-dark" target="_blank">Privacy Policy</a>
           </li>
           <li>
             <a href="#!" class="text-dark">Contact</a>
@@ -243,9 +243,6 @@
     <!-- Advertisement Banners -->
     <div>
     <div class="banner-ad top-banner-ad">Top Banner Ad</div>
-<!--     <div class="banner-ad bottom-banner-ad">Bottom Banner Ad</div> -->
-    <div class="banner-ad right-banner-ad">Right Banner Ad</div>
-    <div class="banner-ad left-banner-ad">Left Banner Ad</div>
     </div>
 
     <!-- Bootstrap JS and Popper.js -->
@@ -303,8 +300,7 @@
         event.preventDefault(); // Prevent the default form submission
         
         const formData = new FormData(this); // 'this' refers to the form
-        
-        
+
         fetch('/upload_speech', {
             method: 'POST',
             body: formData,
@@ -320,7 +316,7 @@
                 const messageContainer = document.createElement('p');
                 messageContainer.textContent = data.message; // Use the message from the response
                 alert(data.message) // Append the message to the body or to a specific container
-                docment.getElementById('submitButton').disabled = true; // Disable the button
+                document.getElementById('submitButton').disabled = true; // Disable the button
 
             }
         })
@@ -388,49 +384,7 @@
     });
     </script>
     
-    
-<div>
-<button id="privacyNoticeButton">Show Privacy Policy</button>
 
-<div id="privacyNotice">
-    <h2>Privacy Policy</h2>
-    <p>
-Privacy Policy
-
-At text2speech.work, we respect your privacy and are committed to protecting it. This policy outlines our practices regarding the collection, use, and disclosure of your information through our website's services, including ads, in compliance with the General Data Protection Regulation (GDPR) and the California Privacy Rights Act (CPRA).
-
-Data Collection: We collect personal data such as name, email, and browsing data to improve our services and provide personalized ads.
-
-Consent: Before collecting data, we obtain your explicit consent through our website's consent mechanism. You have the right to withdraw consent at any time.
-
-Use of Data: Your data is used strictly for the purposes stated at the time of collection, such as to provide you with targeted advertisements.
-
-Data Rights: You have the right to access, correct, delete, or port your data. Additionally, under CPRA, California residents have the right to opt-out of the sale of their personal information.
-
-Data Protection: We implement security measures to protect your data from unauthorized access or disclosure.
-
-Third-Party Services: Our website uses third-party services for ads. These partners are GDPR and CPRA compliant.
-
-Changes to This Policy: We may update our privacy policy and will notify you of changes.
-
-Contact Us: For any questions or requests regarding your data, please contact us at aliceng462@gmail.com
-
-For more detailed information, please visit our full Privacy Policy page.
-        
-    </p>
-    <!-- Truncated for brevity -->
-    <p>For more detailed information, please visit our full Privacy Policy page.</p>
-</div>
-</div>
-    
-<script>
-document.getElementById("privacyNoticeButton").onclick = function() {
-    var notice = document.getElementById("privacyNotice");
-    notice.style.display = notice.style.display === "none" ? "block" : "none";
-};
-</script>
     
 </body>
 </html>
-
-
