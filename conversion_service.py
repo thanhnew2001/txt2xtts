@@ -373,10 +373,11 @@ def read_message_from_sqs(sqs, queue_url):
 # print(presigned_url)
 
 # start the main program #
-# Assuming message_body is the JSON string you received from SQS
-message_body = read_message_from_sqs(sqs, queue_url)  # This calls the function from the previous example
 
-print(message_body)
 
 while 1:
+    # Assuming message_body is the JSON string you received from SQS
+    message_body = read_message_from_sqs(sqs, queue_url)  # This calls the function from the previous example
+
+    print(message_body)
     conversion_processing(message_body)
