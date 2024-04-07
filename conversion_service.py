@@ -297,7 +297,7 @@ def conversion_processing(message_body):
 
         # Send email notification with the download link
         email_subject = "Your audio is ready!"
-        email_body = f"Your processed audio is ready. You can download it from: <a href='{presigned_url}'>here</a>"
+        email_body = f"Your processed audio is ready. You can download it from: {presigned_url}"
         send_secure_email(email_subject, email_body, recipient_email, "aivideo@tad-learning.edu.vn", "thanh123!@#")
         print(f"Email sent to {recipient_email}")
 
@@ -369,4 +369,5 @@ message_body = read_message_from_sqs(sqs, queue_url)  # This calls the function 
 
 print(message_body)
 
-conversion_processing(message_body)
+while 1:
+    conversion_processing(message_body)
