@@ -333,28 +333,37 @@ def read_message_from_sqs(sqs, queue_url):
         # Receive a message from the SQS queue
         response = sqs.receive_message(
             QueueUrl=queue_url,
-            MaxNumberOfMessages=1,  # Limit to only one message
-            WaitTimeSeconds=10  # Long polling
+            AttributeNames=[
+                'SentTimestamp'
+            ],
+            MaxNumberOfMessages=1,
+            MessageAttributeNames=[
+                'All'
+            ],
+            VisibilityTimeout=30,  # The duration (in seconds) that the received messages are hidden from subsequent retrieve requests after being retrieved by a receive message request
+            WaitTimeSeconds=0  # The duration (in seconds) for which the call waits for a message to arrive in the queue before returning
         )
-        
-        if 'Messages' in response:  # Check if message is available
+
+        if 'Messages' in response:
             message = response['Messages'][0]
             receipt_handle = message['ReceiptHandle']
+
+            print("Message Received: ")
+            print(message['Body'])
             
-            # Process the message
-            print("Message received:", message['Body'])
-            
-            # Remove the message from the queue to prevent it from being read again
+            # Delete received message from queue to prevent it from being processed again
             sqs.delete_message(
                 QueueUrl=queue_url,
                 ReceiptHandle=receipt_handle
             )
+            print("Message deleted from the queue.")
+            
             return json.loads(message['Body'])
         else:
-            print("No messages")
+            print("No messages to process.")
             return None
     except Exception as e:
-        print("Error reading message:", e)
+        print(f"An error occurred: {e}")
         return None
 
 # Usage example
