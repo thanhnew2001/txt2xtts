@@ -356,28 +356,6 @@ def read_message_from_sqs(sqs, queue_url):
         print("Error reading message:", e)
         return None
 
-def parse_message(message_body):
-  if message_body:
-      # Parse the message_body string into a Python dictionary
-      message = json.loads(message_body)
-      
-      # Extract parameters
-      file_content = message.get('file_content')
-      target_lang = message.get('target_lang')
-      recipient_email = message.get('recipient_email')
-      host_url = message.get('host_url')
-      unique_id = message.get('unique_id')
-      speaker_wav_path = message.get('speaker_wav_path')
-      
-      # Save the file_content to a file
-      file_path = os.path.join('/path/to/save', f'{unique_id}.txt')
-      with open(file_path, 'w', encoding='utf-8') as file:
-          file.write(file_content)
-      
-      print(f"File saved to {file_path}")
-      # Now you can proceed with converting the text to audio and emailing the user
-
-
 # Usage example
 # file_name = 'female_voice.wav'
 # bucket_name = 'xtts'
@@ -386,5 +364,6 @@ def parse_message(message_body):
 
 # start the main program #
 # Assuming message_body is the JSON string you received from SQS
-message_body = read_message_from_sqs()  # This calls the function from the previous example
-conversion_processing(message_body)
+message_body = read_message_from_sqs(sqs, queue_url)  # This calls the function from the previous example
+while 1:
+    conversion_processing(message_body)
