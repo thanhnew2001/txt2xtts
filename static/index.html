@@ -136,6 +136,17 @@
             }
         }
 
+        #privacyNoticeButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+        #privacyNotice {
+            display: none;
+            padding: 20px;
+            margin-top: 20px;
+            border-top: 2px solid #000; /* Visual separation */
+        }
 
     </style>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8645880272294775"
@@ -357,6 +368,25 @@
     </script>
     
     
+<div>
+<button id="privacyNoticeButton">Show Privacy Policy</button>
 
+<div id="privacyNotice">
+    <h2>Privacy Policy</h2>
+    <p>At text2speech.work, we respect your privacy and are committed to protecting it. This policy outlines our practices...</p>
+    <!-- Truncated for brevity -->
+    <p>For more detailed information, please visit our full Privacy Policy page.</p>
+</div>
+</div>
+    
+<script>
+document.getElementById("privacyNoticeButton").onclick = function() {
+    var notice = document.getElementById("privacyNotice");
+    notice.style.display = notice.style.display === "none" ? "block" : "none";
+};
+</script>
+    
 </body>
 </html>
+
+
