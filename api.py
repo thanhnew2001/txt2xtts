@@ -143,7 +143,7 @@ def upload_speech():
         voice_file.save(voice_filepath)
         speaker_wav_path = 'own_voice'
         # upload the voice to s3
-        own_voice_url = upload_file_to_s3(voice_filepath, "xtts", object_name=None)
+        own_voice_url = upload_file_to_s3(voice_filepath, "xtts")
         
     else:
         # Fallback to a default or selected voice option
