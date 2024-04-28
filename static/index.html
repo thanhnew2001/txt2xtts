@@ -740,7 +740,7 @@
         // Optional: Validate file size on the client side (5MB = 5*1048576 bytes)
         voiceFileInput.addEventListener('change', function() {
             const file = this.files[0];
-            if (file && file.size > 5*1048576/5) { // File size is more than 1MB
+            if (file && file.size > 5*1048576) { // File size is more than 5MB
                 alert('The file size should be less than 5MB.');
                 this.value = ''; // Resets the file input
             }
