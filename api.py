@@ -11,6 +11,8 @@ from nltk.tokenize import sent_tokenize
 from flask import Flask, request, jsonify, make_response, send_file, render_template, Response, send_from_directory
 from flask_cors import CORS
 import nltk
+import boto3
+from botocore.exceptions import NoCredentialsError
 
 nltk.download('punkt')
 
@@ -71,7 +73,6 @@ def clean_file(input, output):
     with open(output, 'w', encoding='utf-8') as file:
         file.write(final_content)
 
-import boto3
 # Initialize a Boto3 client for SQS
 sqs = boto3.client('sqs', region_name='ap-southeast-1')
 # Specify your SQS queue URL
@@ -97,6 +98,22 @@ def download_audio(unique_id):
     else:
         return jsonify({'error': 'Video not found.'}), 404
 
+def upload_file_to_s3(file_name, bucket_name, object_name=None):
+    if object_name is None:
+        object_name = file_name
+    s3_client = boto3.client('s3')
+    try:
+        s3_client.upload_file(file_name, bucket_name, object_name)
+        # Generate a presigned URL for the uploaded file
+        presigned_url = s3_client.generate_presigned_url('get_object',
+                                                         Params={'Bucket': bucket_name,
+                                                                 'Key': object_name},
+                                                         ExpiresIn=3600) # URL expires in 1 hour
+        return presigned_url
+    except NoCredentialsError:
+        print("Credentials not available")
+        return None
+        
 @app.route('/upload_speech', methods=['POST'])
 def upload_speech():
     # Get text file
@@ -118,12 +135,16 @@ def upload_speech():
 
      # Check for an optional voice file
     voice_file = request.files.get('voice_file')
+    own_voice_url = None
     if voice_file and allowed_file(voice_file.filename, 'audio'):
         # Process the voice file similarly, using a different directory if needed
         voice_filename_secure = secure_filename(voice_file.filename)
         voice_filepath = os.path.join(UPLOAD_FOLDER, voice_filename_secure)
         voice_file.save(voice_filepath)
-        speaker_wav_path = voice_filepath
+        speaker_wav_path = 'own_voice'
+        # upload the voice to s3
+        own_voice_url = upload_file_to_s3(voice_filepath, "xtts", object_name=None)
+        
     else:
         # Fallback to a default or selected voice option
         speaker_wav_path = request.form.get("voice", "female_voice.wav")  # Use default path or form option
@@ -145,7 +166,8 @@ def upload_speech():
         'recipient_email': recipient_email,
         'host_url': request.host_url,
         'unique_id': random_str,
-        'speaker_wav_path': speaker_wav_path
+        'speaker_wav_path': speaker_wav_path,
+        'own_voice_url': own_voice_url
     })
             
     # Send the message to SQS
