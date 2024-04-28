@@ -88,7 +88,7 @@ if os.path.exists(config_path):
         vocab_path=os.path.join(model_path, "vocab.json"),
         checkpoint_dir= model_path,
         eval=True,
-        use_deepspeed=True
+        use_deepspeed=False
     )
     print("CUDA Available:", torch.cuda.is_available())
 
