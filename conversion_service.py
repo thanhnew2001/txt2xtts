@@ -41,6 +41,7 @@ from sendmail import send_secure_email  # Ensure this is your function for sendi
 
 import boto3
 from botocore.exceptions import NoCredentialsError
+import requests 
 
 app = Flask(__name__,  static_url_path='/static', static_folder='static')
 CORS(app)  # Enable CORS for all routes
