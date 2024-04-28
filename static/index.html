@@ -235,13 +235,13 @@
                     <option value="obama.wav"> 👨🏿‍⚖️ Obama</option>
                     <option value="taylor.wav">👩‍🎤 Taylor</option>
                     <option value="female_voice.wav">👩‍🦰 A Female Voice</option>
-                    <option value="own_voice">👨‍🦰 Own Voice</option>
+                    <option value="own_voice">👨‍🦰 Your Own Voice</option>
                 </select>
             </div>
 
             <!-- File Upload for Own Voice, initially hidden -->
             <div id="ownVoiceUpload" class="mb-3" style="display: none;">
-                <label for="voiceFileInput">Upload Your Voice Sample (WAV, less than 1MB):</label>
+                <label for="voiceFileInput">Upload Your Voice Sample (WAV, less than 5MB):</label>
                 <input type="file" class="form-control" id="voiceFileInput" name="voice_file" accept=".wav">
             </div>
 
@@ -737,11 +737,11 @@
             }
         });
     
-        // Optional: Validate file size on the client side (1MB = 1048576 bytes)
+        // Optional: Validate file size on the client side (5MB = 5*1048576 bytes)
         voiceFileInput.addEventListener('change', function() {
             const file = this.files[0];
-            if (file && file.size > 1048576/5) { // File size is more than 1MB
-                alert('The file size should be less than 200 KB.');
+            if (file && file.size > 5*1048576/5) { // File size is more than 1MB
+                alert('The file size should be less than 5MB.');
                 this.value = ''; // Resets the file input
             }
         });
