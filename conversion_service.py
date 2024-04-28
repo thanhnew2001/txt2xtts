@@ -298,7 +298,7 @@ def conversion_processing(message_body):
         # Send email notification with the download link
         email_subject = "Your audio is ready!"
         email_body = f"Your processed audio is ready. You can download it from: {presigned_url}"
-        send_secure_email(email_subject, email_body, recipient_email, "aivideo@tad-learning.edu.vn", "thanh123!@#")
+        send_secure_email(email_subject, email_body, recipient_email, "aivideo@tad-learning.edu.vn", "xxxxx")
         print(f"Email sent to {recipient_email}")
 
     except Exception as e:
