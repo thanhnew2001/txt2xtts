@@ -1,9 +1,9 @@
 
-torch
-torchaudio
+#torch
+#torchaudio
 TTS @ git+https://github.com/coqui-ai/TTS.git#egg=TTS
 transformers
-faster_whisper
+#faster_whisper
 numpy
 pydub
 flask_cors
