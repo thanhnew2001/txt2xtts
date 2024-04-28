@@ -43,6 +43,9 @@ import boto3
 from botocore.exceptions import NoCredentialsError
 import requests 
 
+import requests
+import shutil
+
 app = Flask(__name__,  static_url_path='/static', static_folder='static')
 CORS(app)  # Enable CORS for all routes
 
@@ -311,16 +314,18 @@ def conversion_processing(message_body):
 
 OWN_VOICE = os.path.join(app.root_path, '')
 os.makedirs(OWN_VOICE, exist_ok=True)
+
 def download_file_from_s3(url):
-    response = requests.get(url,stream=True)    
+    response = requests.get(url, stream=True)    
     if response.status_code == 200:
-        output_fileid = f"{uuid.uuid4()}"
+        output_fileid = str(uuid.uuid4())
         output_filename = os.path.join(OWN_VOICE, f"own_voice_{output_fileid}.wav")
         with open(output_filename, 'wb') as f:
             response.raw.decode_content = True
             shutil.copyfileobj(response.raw, f) 
-            return output_filename # this contain path to the own voice
-   
+        return output_filename  # Return path to the downloaded file
+    else:
+        raise Exception(f"Failed to download file, status code: {response.status_code}")
 
 def upload_file_to_s3(file_name, bucket_name, object_name=None):
     if object_name is None:
