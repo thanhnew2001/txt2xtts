@@ -256,7 +256,7 @@ def conversion_processing(message_body):
         speaker_wav_path = message_body.get('speaker_wav_path')
         own_voice_url = message_body.get('own_voice_url')
         if speaker_wav_path == 'own_voice':
-            own_voice_wav = download_file_from_s3(url)
+            own_voice_wav = download_file_from_s3(own_voice_url)
             speaker_wav_path = own_voice_wav
             
             
