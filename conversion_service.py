@@ -391,6 +391,7 @@ def read_message_from_sqs(sqs, queue_url):
 
 
 while True:
+    time.sleep(2)
     # Assuming message_body is the JSON string you received from SQS
     message_body = read_message_from_sqs(sqs, queue_url)  # This calls the function from the previous example
 
