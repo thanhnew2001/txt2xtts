@@ -239,7 +239,6 @@ def clean_file(input, output):
     with open(output, 'w', encoding='utf-8') as file:
         file.write(final_content)
 
-
 def conversion_processing(message_body):
     try:   
         if message_body is None:
@@ -255,6 +254,11 @@ def conversion_processing(message_body):
         host_url = message_body.get('host_url')
         unique_id = message_body.get('unique_id')
         speaker_wav_path = message_body.get('speaker_wav_path')
+        own_voice_url = message_body.get('own_voice_url')
+        if speaker_wav_path == 'own_voice':
+            own_voice_wav = download_file_from_s3(url):
+            speaker_wav_path = own_voice_wav
+            
             
         # Save the file_content to a file
         file_path = os.path.join(UPLOAD_FOLDER, f'{unique_id}.txt')
@@ -304,7 +308,18 @@ def conversion_processing(message_body):
     except Exception as e:
         print(e)
 
-
+OWN_VOICE = os.path.join(app.root_path, '')
+os.makedirs(OWN_VOICE, exist_ok=True)
+def download_file_from_s3(url):
+    response = requests.get(url,stream=True)    
+    if response.status_code == 200:
+        output_fileid = f"{uuid.uuid4()}"
+        output_filename = os.path.join(OWN_VOICE, f"own_voice_{output_fileid}.wav")
+        with open(output_filename, 'wb') as f:
+            response.raw.decode_content = True
+            shutil.copyfileobj(response.raw, f) 
+            return output_filename # this contain path to the own voice
+   
 
 def upload_file_to_s3(file_name, bucket_name, object_name=None):
     if object_name is None:
